@@ -25,8 +25,14 @@ environment {
             steps {
                 sh 'mvn install'
             }
-        }
-        stage ('MVN SonarQube') {
+        }	    
+	    stage("Test JUnit - Mockito"){
+                steps {
+                            sh 'mvn test'
+                }
+          }
+	    
+        stage ('SonarQube SAST') {
 		steps {
 			 sh 'printenv'
               //  sh  "mvn sonar:sonar -Dsonar.login=ee074ba54a7030fc4acf6117d9b3a5490e12febd"
@@ -41,20 +47,28 @@ environment {
                     //   sh'mvn clean deploy -Dmaven.test.skip=true -Dresume=false'
                }
           }
-          
-          stage("Test JUnit - Mockito"){
-                steps {
-                            sh 'mvn test'
-                }
-          }
+	    
+stage('Vulnerability Scan - Docker') {
+        steps {
+          parallel(
+ 			"Trivy Scan":{
+ 	 			sh "bash trivy-docker-image-scan.sh"
+ 	 		},
+ 		 "OPA Conftest":{
+ 				sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile'
+ 			}
 
+        	)
+        }
+      }
+	
 	    
     stage('Docker Build and Push') {
        steps {
         withDockerRegistry([credentialsId: "Docker-Hub-AmirTrigui", url: ""]) {
            sh 'printenv'
-           sh 'docker build -t likeaboos/ci:latest .'
-sh 'docker push likeaboos/ci:latest '
+//           sh 'docker build -t likeaboos/ci:latest .'
+ // sh 'docker push likeaboos/ci:latest '
          }
        }
      }
@@ -62,8 +76,8 @@ sh 'docker push likeaboos/ci:latest '
 
 stage('Docker Compose') {
       steps {
-	      sh 'printenv'
-               sh 'docker-compose up --d --force-recreate '
+//	      sh 'printenv'
+   //            sh 'docker-compose up --d --force-recreate '
        }
      }
 
