@@ -6,7 +6,7 @@ services:
     build:
       context: .
     container_name: ci-angular
-    image: likeaboos/angular-ci:frontend
+    image: rayhub/demo-node-crud-frontend:frontend
     ports:
       - "8888:80"
     networks:
