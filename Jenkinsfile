@@ -69,7 +69,7 @@ stage('Docker Compose') {
 
 	    stage('OWASP ZAP - DAST') {
         steps {
-            sh 'bash ./zap.sh'
+            sh 'bash zap.sh'
         }
      }
 	   
