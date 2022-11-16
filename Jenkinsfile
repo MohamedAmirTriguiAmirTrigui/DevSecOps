@@ -47,7 +47,19 @@ environment {
                }
           }
 	    
+ stage('Vulnerability Scan - Docker') {
+        steps {
+          parallel(
+			"Trivy Scan":{
+ 	 			sh "bash trivy-docker-image-scan.sh"
+	 		},
+		 "OPA Conftest":{
+				sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile'
+ 			}
 
+     	)
+        }
+      }
 	
 	    
     stage('Docker Build and Push') {
@@ -67,11 +79,7 @@ stage('Docker Compose') {
        }
      }
 
-	    stage('OWASP ZAP - DAST') {
-        steps {
-            sh 'bash zap.sh'
-        }
-     }
+	   
 	   
 	
 	
