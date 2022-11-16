@@ -61,7 +61,7 @@ environment {
      }
 stage('Vulnerability Scan - Docker') {
 	steps {
-sh 'trivy likeaboos/ci:latest' 
+sh "bash trivy-docker-image-scan.sh" 
 	}}
 	    
 stage('Docker Compose') {
