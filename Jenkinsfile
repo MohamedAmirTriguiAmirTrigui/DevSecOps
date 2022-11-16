@@ -7,7 +7,7 @@ environment {
     stages {
         stage('Git') {
             steps {
-               git branch: 'amir', url: 'https://github.com/devCyberops/SpringDataJPA-CrudRepo.git'
+               git branch: 'main', url: 'github.com:MohamedAmirTriguiAmirTrigui/DevSecOps.git'
             }
         }
             stage('MVN Clean') {
