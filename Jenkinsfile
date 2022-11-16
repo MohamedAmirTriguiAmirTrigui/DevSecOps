@@ -59,10 +59,6 @@ environment {
          }
        }
      }
-stage('Vulnerability Scan - Docker') {
-	steps {
-sh "bash trivy-docker-image-scan.sh" 
-	}}
 	    
 stage('Docker Compose') {
       steps {
@@ -71,6 +67,11 @@ stage('Docker Compose') {
        }
      }
 
+	    stage('OWASP ZAP - DAST') {
+        steps {
+            sh 'bash zap.sh'
+        }
+     }
 	   
 	
 	
