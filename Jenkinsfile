@@ -76,7 +76,7 @@ stage('Vulnerability Scan - Docker') {
 
 stage('Docker Compose') {
       steps {
-//	      sh 'printenv'
+	      sh 'printenv'
    //            sh 'docker-compose up --d --force-recreate '
        }
      }
